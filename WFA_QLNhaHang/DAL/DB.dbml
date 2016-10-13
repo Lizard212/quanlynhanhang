@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="NHAHANG" Class="DBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-1KGIO0F\SQLEXPRESS;Initial Catalog=NHAHANG;Integrated Security=True" SettingsObjectName="DAL.Properties.Settings" SettingsPropertyName="NHAHANGConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BAN" Member="BANs">
+    <Type Name="BAN">
+      <Column Name="MABAN" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TENBAN" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="MAKV" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="BAN_HOADON" Member="HOADONs" ThisKey="MABAN" OtherKey="MABAN" Type="HOADON" />
+      <Association Name="KHUVUC_BAN" Member="KHUVUC" ThisKey="MAKV" OtherKey="MAKV" Type="KHUVUC" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CTHOADON" Member="CTHOADONs">
+    <Type Name="CTHOADON">
+      <Column Name="MAHD" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MASP" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SOLUONG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GIAMGIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="HOADON_CTHOADON" Member="HOADON" ThisKey="MAHD" OtherKey="MAHD" Type="HOADON" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="SANPHAM_CTHOADON" Member="SANPHAM" ThisKey="MASP" OtherKey="MASP" Type="SANPHAM" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HOADON" Member="HOADONs">
+    <Type Name="HOADON">
+      <Column Name="MAHD" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NGAYLAP" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SLKHACH" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PHIKHAC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GHICHU" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="MANV" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MABAN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="HOADON_CTHOADON" Member="CTHOADONs" ThisKey="MAHD" OtherKey="MAHD" Type="CTHOADON" />
+      <Association Name="BAN_HOADON" Member="BAN" ThisKey="MABAN" OtherKey="MABAN" Type="BAN" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="NHANVIEN_HOADON" Member="NHANVIEN" ThisKey="MANV" OtherKey="MANV" Type="NHANVIEN" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KHUVUC" Member="KHUVUCs">
+    <Type Name="KHUVUC">
+      <Column Name="MAKV" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENKV" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CP_TOITHIEU" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="KHUVUC_BAN" Member="BANs" ThisKey="MAKV" OtherKey="MAKV" Type="BAN" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NHANVIEN" Member="NHANVIENs">
+    <Type Name="NHANVIEN">
+      <Column Name="MANV" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENNV" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="NHANVIEN_HOADON" Member="HOADONs" ThisKey="MANV" OtherKey="MANV" Type="HOADON" />
+      <Association Name="NHANVIEN_TAIKHOAN" Member="TAIKHOANs" ThisKey="MANV" OtherKey="MANV" Type="TAIKHOAN" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NHOMSP" Member="NHOMSPs">
+    <Type Name="NHOMSP">
+      <Column Name="MANHOM" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENNHOM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="NHOMSP_SANPHAM" Member="SANPHAMs" ThisKey="MANHOM" OtherKey="MANHOM" Type="SANPHAM" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SANPHAM" Member="SANPHAMs">
+    <Type Name="SANPHAM">
+      <Column Name="MASP" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TENSP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GIAMGIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DONVI" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TINHTRANG" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MANHOM" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="SANPHAM_CTHOADON" Member="CTHOADONs" ThisKey="MASP" OtherKey="MASP" Type="CTHOADON" />
+      <Association Name="NHOMSP_SANPHAM" Member="NHOMSP" ThisKey="MANHOM" OtherKey="MANHOM" Type="NHOMSP" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TAIKHOAN" Member="TAIKHOANs">
+    <Type Name="TAIKHOAN">
+      <Column Name="USERS" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PASS" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MANV" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="NHANVIEN_TAIKHOAN" Member="NHANVIEN" ThisKey="MANV" OtherKey="MANV" Type="NHANVIEN" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Function Name="dbo.searchKhuvuc" Method="searchKhuvuc">
+    <Parameter Name="tenkv" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchKhuvucResult">
+      <Column Name="MAKV" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TENKV" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CP_TOITHIEU" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.searchBan" Method="searchBan">
+    <Parameter Name="tenban" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="tenkv" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchBanResult">
+      <Column Name="MABAN" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TENBAN" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="TINHTRANG" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MAKV" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.searchNhomsp" Method="searchNhomsp">
+    <Parameter Name="tennhom" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchNhomspResult">
+      <Column Name="MANHOM" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TENNHOM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.searchSanpham" Method="searchSanpham">
+    <Parameter Name="tensp" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="tennhom" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchSanphamResult">
+      <Column Name="MASP" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TENSP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GIAMGIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DONVI" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TINHTRANG" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MANHOM" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.searchNV" Method="searchNV">
+    <Parameter Name="tennv" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchNVResult">
+      <Column Name="MANV" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TENNV" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.searchHD" Method="searchHD">
+    <Parameter Name="mahd" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="searchHDResult">
+      <Column Name="MAHD" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NGAYLAP" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SLKHACH" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PHIKHAC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GHICHU" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="MANV" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MABAN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
